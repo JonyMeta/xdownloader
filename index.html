@@ -97,7 +97,7 @@
 
         try {
             // Reemplaza localhost por la URL de tu servidor en la nube cuando lo subas
-            const response = await fetch('http://localhost:3000/api/download', {
+            const response = await fetch('https://xdownloader-fcy7.onrender.com/api/download', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ url, format })
