@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 // Nota: En un entorno real, usarías una librería como 'twitter-url-direct' o ejecutarías 'yt-dlp'
-const { getDirectLinks } = require('twitter-url-direct'); 
+const { getDirectLinks } = require('twitter-url-direct-fikuri'); 
 
 const app = express();
 app.use(cors());
