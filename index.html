@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X/Twitter Downloader</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #0f1419;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #1e2732;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 450px;
+            text-align: center;
+        }
+        h1 { font-size: 24px; margin-bottom: 20px; color: #1d9bf0; }
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            border: 1px solid #38444d;
+            border-radius: 8px;
+            background-color: #15181c;
+            color: white;
+            margin-bottom: 15px;
+            font-size: 16px;
+        }
+        select {
+            width: 95%;
+            padding: 12px;
+            border: 1px solid #38444d;
+            border-radius: 8px;
+            background-color: #15181c;
+            color: white;
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #1d9bf0;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 9999px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover { background-color: #1a8cd8; }
+        .result { margin-top: 20px; }
+        .result a {
+            color: #00ff88;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>X / Twitter Downloader</h1>
+    <input type="text" id="tweetUrl" placeholder="Pega el link del tweet aquí...">
+    
+    <select id="format">
+        <option value="mp4">Video (MP4)</option>
+        <option value="mp3">Audio (MP3)</option>
+    </select>
+
+    <button onclick="processDownload()">Obtener Enlace de Descarga</button>
+
+    <div class="result" id="resultContainer"></div>
+</div>
+
+<script>
+    async function processDownload() {
+        const url = document.getElementById('tweetUrl').value;
+        const format = document.getElementById('format').value;
+        const resultContainer = document.getElementById('resultContainer');
+
+        if(!url) {
+            alert('Por favor, ingresa un enlace.');
+            return;
+        }
+
+        resultContainer.innerHTML = 'Procesando...';
+
+        try {
+            // Reemplaza localhost por la URL de tu servidor en la nube cuando lo subas
+            const response = await fetch('http://localhost:3000/api/download', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ url, format })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                resultContainer.innerHTML = `<a href="${data.downloadUrl}" target="_blank" download>¡Listo! Haz clic aquí para descargar su ${format.toUpperCase()}</a>`;
+            } else {
+                resultContainer.innerHTML = `<span style="color: #ff4444;">${data.error}</span>`;
+            }
+        } catch (error) {
+            resultContainer.innerHTML = '<span style="color: #ff4444;">Error de conexión con el servidor.</span>';
+        }
+    }
+</script>
+</body>
+</html>
